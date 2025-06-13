@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>ISO/OSI-Modell - Teil 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ISO/OSI-Referenzmodell – Teil 1</h1>
+    <p>Bitte tragt für jede Schicht des OSI-Modells die folgenden Informationen ein:</p>
+    <table id="osiTable">
+        <thead>
+            <tr>
+                <th>Name der Schicht</th>
+                <th>Aufgabe in einem Satz</th>
+                <th>Alltagsbeispiel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+        </tbody>
+    </table>
+    <button onclick="generatePDF()">Tabelle als PDF exportieren</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(14);
+            doc.text("ISO/OSI-Referenzmodell – Übersicht", 10, 10);
+
+            const rows = Array.from(document.querySelectorAll("tbody tr")).map(row => {
+                return Array.from(row.querySelectorAll("input")).map(input => input.value);
+            });
+
+            let y = 20;
+            const colWidths = [60, 60, 60];
+            doc.setFontSize(10);
+
+            doc.text("Name der Schicht", 10, y);
+            doc.text("Aufgabe", 80, y);
+            doc.text("Beispiel", 150, y);
+            y += 6;
+
+            rows.forEach(row => {
+                doc.text(row[0] || "", 10, y);
+                doc.text(row[1] || "", 80, y);
+                doc.text(row[2] || "", 150, y);
+                y += 6;
+            });
+
+            doc.save("OSI_Modell_Tabelle.pdf");
+        }
+    </script>
+</body>
+</html>
